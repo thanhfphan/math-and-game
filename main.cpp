@@ -1,43 +1,49 @@
-#include <GL/glew.h>	// include GLEW and new version of GL on Windows
-#include <GLFW/glfw3.h> // GLFW helper library for window management
-#include <iostream>		//for cout
+#include <SDL.h>
+#include <stdio.h>
 
-int main(int argc, char **argv)
+//Screen dimension constants
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 480;
+int main(int argc, char *args[])
 {
-	// start GL context and O/S window using the GLFW helper library
-	if (!glfwInit())
+	//The window we'll be rendering to
+	SDL_Window *window = NULL;
+
+	//The surface contained by the window
+	SDL_Surface *screenSurface = NULL;
+
+	//Initialize SDL
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
-		std::cerr << "ERROR: could not start GLFW3" << std::endl;
-		return 1;
+		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
 	}
-
-	//Setting window properties
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-	//Actually create the window
-	GLFWwindow *window = glfwCreateWindow(640, 480, "OpenGL Initialization Example", NULL, NULL);
-	if (!window)
+	else
 	{
-		std::cerr << "ERROR: could not open window with GLFW3" << std::endl;
-		glfwTerminate();
-		return 1;
-	}
-	glfwMakeContextCurrent(window);
+		//Create window
+		window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+		if (window == NULL)
+		{
+			printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+		}
+		else
+		{
+			//Get window surface
+			screenSurface = SDL_GetWindowSurface(window);
 
-	// start GLEW extension handler
-	glewExperimental = GL_TRUE;
-	glewInit();
+			//Fill the surface white
+			SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
 
-	// get version info
-	const GLubyte *renderer = glGetString(GL_RENDERER); // get renderer string
-	const GLubyte *version = glGetString(GL_VERSION);	// version as a string
-	std::cout << "Renderer: " << renderer << std::endl;
-	std::cout << "OpenGL version supported " << version << std::endl;
+			//Update the surface
+			SDL_UpdateWindowSurface(window);
 
-	// close GL context and any other GLFW resources
-	glfwTerminate();
+			//Wait two seconds
+			SDL_Delay(2000);
+		}
+	} //Destroy window
+	SDL_DestroyWindow(window);
+
+	//Quit SDL subsystems
+	SDL_Quit();
+
 	return 0;
 }
