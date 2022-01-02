@@ -1,4 +1,4 @@
-# Line intersection
+# Segment intersection
 
 ## Quick start
 
@@ -16,19 +16,9 @@ make macos
 ./main
 ```
 
+![Demo](segmentintersect.gif)
+
 ## How it works
 
-1. Line 1: `a1x + b1y = c1`
-2. Line 2: `a2x + b2y = c2`
-3. (Line 1 * b2): `a1b2x + b1b2y = c1b2` 
-4. (Line 2 * b1): `a2b1x + b2b1y= c2b1` 
-5. (3 - 4): `x = (c1b2 - c2b1)/(a1b2 - a2b1)`
-6. (Line 1 * a2) = `a1a2x + b1a2y = c1a2`
-7. (Line 2 * a1) = `a2a1x + b2a1y = c2a1`
-8. (7 - 6): `y = (c2a1 - c1a2)/(a1b2 - a2b1)`
-
-=> Line intersect at P(x0,y0) where x0 = `(c1b2 - c2b1)/(a1b2 - a2b1)` and y0 = `(c2a1 - c1a2)/(a1b2 - a2b1)`
-
-- Note: Two line are parallel or collinear when `a1b2 - a2b1` equal `0`. 
-
-![demo](lineintersection.gif)
+![How it works](howitworks.PNG)
+We use a formula from [line intersections](https://github.com/thanhfphan/math-and-game/tree/master/collision_detection/line-intersections) to find the point where 2 line intersect(`I0`). And then calculate `ration = (I0 - x0)/(x1 - x0)` if ratio larger than 0 and less than 1 then its mean 2 segment intersect. Note we must calculate ratio for both `x` and `y`.

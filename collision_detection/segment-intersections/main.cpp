@@ -51,14 +51,14 @@ int main(int argc, char *args[])
 	SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, screenSurface);
 	TRY(SDL_RenderCopy(renderer, texture, NULL, NULL));
 
-	Point point11 = Point{130, 140};
-	Point point12 = Point{300, 500};
+	Point point11 = Point{130, 500};
+	Point point12 = Point{1000, 500};
 	Point point21 = Point{600, 700};
 	Point point22 = Point{900, 150};
 	SDL_Rect intersecPoint;
 	int offset = 10;
-	intersecPoint.h = offset*2;
-	intersecPoint.w = offset*2;
+	intersecPoint.h = offset * 2;
+	intersecPoint.w = offset * 2;
 	std::string movObj;
 	while (isRunning)
 	{
@@ -135,7 +135,7 @@ int main(int argc, char *args[])
 			}
 		}
 
-		// Render point where 2 line intersect
+		// Render point where 2 segment intersect
 		int a1 = point12.y - point11.y;
 		int b1 = point11.x - point12.x;
 		int c1 = a1 * point11.x + b1 * point11.y;
@@ -146,14 +146,20 @@ int main(int argc, char *args[])
 
 		int denominator = a1 * b2 - a2 * b1;
 		if (denominator != 0)
-		{
-			int rectX = (c1 * b2 - c2 * b1) / denominator;
-			int rectY = (c2 * a1 - c1 * a2) / denominator;
-			intersecPoint.x = rectX - offset;
-			intersecPoint.y = rectY - offset;
-			std::cout << "x: " << intersecPoint.x << ",y: " << intersecPoint.y << std::endl;
-			TRY(SDL_RenderFillRect(renderer, &intersecPoint));
-		}
+			{
+				int rectX = (c1 * b2 - c2 * b1) / denominator;
+				int rectY = (c2 * a1 - c1 * a2) / denominator;
+				float rx0 = (float)(rectX - Min(point12.x, point11.x)) / (Max(point12.x, point11.x) - Min(point12.x, point11.x));
+				float ry0 = (float)(rectY - Min(point11.y, point12.y)) / (Max(point12.y, point11.y) - Min(point12.y, point11.y));
+				float rx1 = (float)(rectX - Min(point21.x, point22.x)) / (Max(point22.x , point21.x) - Min(point22.x, point21.x));
+				float ry1 = (float)(rectY - Min(point21.y, point22.y)) / (Max(point22.y , point21.y) - Min(point22.y, point21.y));
+				if (((0 <= rx0 && rx0 <= 1) || (0 <= ry0 && ry0 <= 1)) && ((0 <= rx1 && rx1 <= 1) || (0 <= ry1 && ry1 <= 1)))
+				{
+					intersecPoint.x = rectX - offset;
+					intersecPoint.y = rectY - offset;
+					TRY(SDL_RenderFillRect(renderer, &intersecPoint));
+				}
+			}
 		SDL_RenderPresent(renderer);
 	}
 
