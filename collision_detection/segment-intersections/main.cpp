@@ -149,10 +149,10 @@ int main(int argc, char *args[])
 			{
 				int rectX = (c1 * b2 - c2 * b1) / denominator;
 				int rectY = (c2 * a1 - c1 * a2) / denominator;
-				float rx0 = (float)(rectX - Min(point12.x, point11.x)) / (Max(point12.x, point11.x) - Min(point12.x, point11.x));
-				float ry0 = (float)(rectY - Min(point11.y, point12.y)) / (Max(point12.y, point11.y) - Min(point12.y, point11.y));
-				float rx1 = (float)(rectX - Min(point21.x, point22.x)) / (Max(point22.x , point21.x) - Min(point22.x, point21.x));
-				float ry1 = (float)(rectY - Min(point21.y, point22.y)) / (Max(point22.y , point21.y) - Min(point22.y, point21.y));
+				float rx0 = (float)(rectX - point11.x) / (point12.x - point11.x);
+				float ry0 = (float)(rectY - point11.y) / (point12.y - point11.y);
+				float rx1 = (float)(rectX - point21.x) / (point22.x - point21.x);
+				float ry1 = (float)(rectY - point21.y) / (point22.y -point21.y);
 				if (((0 <= rx0 && rx0 <= 1) || (0 <= ry0 && ry0 <= 1)) && ((0 <= rx1 && rx1 <= 1) || (0 <= ry1 && ry1 <= 1)))
 				{
 					intersecPoint.x = rectX - offset;
