@@ -29,6 +29,6 @@ make macos
 
 => Line intersect at P(x0,y0) where x0 = `(c1b2 - c2b1)/(a1b2 - a2b1)` and y0 = `(c2a1 - c1a2)/(a1b2 - a2b1)`
 
-- Note: If two line are parallel or collinear when `a1b2 - a2b1` equal `0`. 
+- Note: Two line are parallel or collinear when `a1b2 - a2b1` equal `0`. 
 
 ![demo](lineintersection.gif)
