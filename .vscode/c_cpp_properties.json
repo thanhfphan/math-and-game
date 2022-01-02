@@ -1,20 +1,16 @@
 {
     "configurations": [
         {
-            "name": "Win32",
+            "name": "Mac",
             "includePath": [
-                "${workspaceFolder}/**",
-                "D:/Program/msys64/mingw64/include/SDL2"
+                "${default}"
             ],
-            "defines": [
-                "_DEBUG",
-                "UNICODE",
-                "_UNICODE"
+            "defines": [],
+            "macFrameworkPath": [
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/System/Library/Frameworks"
             ],
-            "cStandard": "c17",
-            "cppStandard": "c++17",
-            "intelliSenseMode": "${default}",
-            "compilerPath": "D:\\Program\\msys64\\mingw64\\bin\\g++.exe"
+            "compilerPath": "/usr/bin/clang",
+            "intelliSenseMode": "macos-clang-arm64"
         }
     ],
     "version": 4

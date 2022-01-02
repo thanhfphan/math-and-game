@@ -30,3 +30,5 @@
 *.exe
 *.out
 *.app
+collision_detection/reactangle-vs-reactangle/main
+.vscode/c_cpp_properties.json

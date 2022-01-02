@@ -20,16 +20,13 @@ void TRY(int flag)
 	if (flag != 0)
 	{
 		std::cout << "Got err=" << SDL_GetError() << std::endl;
+		exit(1);
 	}
 }
 
 int main(int argc, char *args[])
 {
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
-	{
-		std::cout << "Init SDL failed, err=" << SDL_GetError() << std::endl;
-		return 1;
-	}
+	TRY(SDL_Init(SDL_INIT_VIDEO));
 
 	window = SDL_CreateWindow("Collision Detection", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 	if (window == NULL)
@@ -38,15 +35,22 @@ int main(int argc, char *args[])
 		return 1;
 	}
 	//renderer
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
+	if (renderer == NULL)
+	{
+		std::cout << "Create renderer failed , err=" << SDL_GetError() << std::endl;
+		return 1;
+	}
 	//surface
 	screenSurface = SDL_GetWindowSurface(window);
-	SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xDD, 0xDD, 0xDD));
-
+	if (screenSurface == NULL) {
+		std::cout << "Create window surface failed , err=" << SDL_GetError() << std::endl;
+		return 1;
+	}
+	TRY(SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xDD, 0xDD, 0xDD)));
 	// texture
 	SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, screenSurface);
-	SDL_RenderCopy(renderer, texture, NULL, NULL); // draw color
+	TRY(SDL_RenderCopy(renderer, texture, NULL, NULL));
 
 	rect1.x = 100;
 	rect1.y = 210;
@@ -68,9 +72,9 @@ int main(int argc, char *args[])
 			SDL_Delay(10);
 		}
 
-		SDL_RenderClear(renderer);
-		SDL_RenderCopy(renderer, texture, NULL, NULL); // draw bg color
-		// Event
+		TRY(SDL_RenderClear(renderer));
+		TRY(SDL_RenderCopy(renderer, texture, NULL, NULL));
+		// EventS
 		while (SDL_PollEvent(&event))
 		{
 			switch (event.type)
@@ -112,7 +116,8 @@ int main(int argc, char *args[])
 			{
 				SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
 			}
-			else{
+			else
+			{
 				SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
 			}
 		}
