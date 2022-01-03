@@ -2,8 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-const int WIDTH = 2300;
-const int HEIGHT = 1400;
+const int WIDTH = 1200;
+const int HEIGHT = 900;
 const int FIXVALUE = 200;
 int main()
 {
@@ -35,15 +35,15 @@ int main()
 			{
 			case sf::Event::KeyPressed:
 			{
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 				{
 					currentPosition.x -= 40;
 				}
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 				{
 					currentPosition.x += 40;
 				}
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 				{
 					currentPosition += -velocity;
 				}
