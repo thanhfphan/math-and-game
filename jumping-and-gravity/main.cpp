@@ -12,11 +12,12 @@ sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "SFML window");
 sf::Texture texture;
 sf::Sprite player;
 sf::Image santaImage;
-sf::Vector2f gravity(0, 150);
+sf::Vector2f gravity(0, 20);
 sf::Vector2f moveDirection(1, 1);
 sf::Vector2f velocity(0, 0);
 bool faceRight = true;
 bool isMoving = false;
+bool isJumping = false;
 float duration = 0;
 
 sf::Texture runningRight[11];
@@ -43,14 +44,19 @@ void processEvent()
 				velocity.x = -40;
 				faceRight = false;
 			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 			{
 				velocity.x = +40;
 				faceRight = true;
 			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 			{
-				velocity.y = -800;
+				if (isJumping)
+				{
+					std::cout << "player is jumping, do nothing" << std::endl;
+					break;
+				}
+				velocity.y = -300;
 			}
 			break;
 		}
@@ -76,10 +82,12 @@ void processEvent()
 void update()
 {
 	sf::Vector2f currentPosition = player.getPosition();
-	currentPosition.x += velocity.x * (float)15 * TIMER_PER_FRAME.asSeconds();
+	currentPosition += velocity * (float)15 * TIMER_PER_FRAME.asSeconds();
+	velocity = velocity + gravity;
 	if (currentPosition.y < HEIGHT - FIXVALUE)
 	{
 		currentPosition.y += gravity.y * (float)15 * TIMER_PER_FRAME.asSeconds();
+		isJumping = true;
 	}
 	if (currentPosition.y < 0)
 	{
@@ -90,6 +98,7 @@ void update()
 	{
 		currentPosition.y = HEIGHT - FIXVALUE;
 		velocity.y = 0;
+		isJumping = false;
 	}
 	if (currentPosition.x < 0)
 	{
@@ -107,7 +116,7 @@ void update()
 
 void playerAnimation()
 {
-	if (runningFrameCount > (int)(sizeof(runningRight)/sizeof(*runningRight)-2))
+	if (runningFrameCount > (int)(sizeof(runningRight) / sizeof(*runningRight) - 2))
 	{
 		runningFrameCount = 0;
 	}
@@ -115,7 +124,7 @@ void playerAnimation()
 	{
 		runningFrameCount += 1;
 	}
-	if (idleFrameCount > (int)(sizeof(idleRight)/sizeof(*idleRight)-2))
+	if (idleFrameCount > (int)(sizeof(idleRight) / sizeof(*idleRight) - 2))
 	{
 		idleFrameCount = 0;
 	}
@@ -134,7 +143,9 @@ void playerAnimation()
 		{
 			player.setTexture(runningLeft[runningFrameCount]);
 		}
-	}else{
+	}
+	else
+	{
 		if (faceRight)
 		{
 			player.setTexture(idleRight[idleFrameCount]);
