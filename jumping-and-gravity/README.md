@@ -24,7 +24,7 @@ make macos
 
 ## How it works
 
-Let say we have 2 vector `v = (1,3)` `g = (0,1)` and player's position at `P = (0,0)`. The new player's position can be calculated by formula below(add `P` with `v` then update `v` of `v`).
+Let say we have 2 vector `v = (1,3)` `g = (0,1)` and player's position at `P = (0,0)`. The new player's position can be calculated by formula:
 
 1. P = P + v
 2. v = v + g
