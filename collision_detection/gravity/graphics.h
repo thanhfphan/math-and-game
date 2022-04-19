@@ -17,4 +17,5 @@ struct Graphics
 	static void ClearScreen(Uint32 color);
 	static void RenderFrame();
 	static void DrawLine(int x0, int y0, int x1, int y1, Uint32 color);
+	static void DrawCircle(int x, int y, int radius, Uint32 color);
 };

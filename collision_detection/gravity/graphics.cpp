@@ -71,3 +71,8 @@ void Graphics::DrawLine(int x0, int y0, int x1, int y1, Uint32 color)
 {
 	lineColor(renderer, x0, y0, x1, y1, color);
 }
+
+void Graphics::DrawCircle(int x, int y, int radius, Uint32 color)
+{
+	filledCircleColor(renderer, x, y, radius, color);
+}
